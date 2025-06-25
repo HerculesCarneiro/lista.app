@@ -72,6 +72,15 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
+project.ext.react = [ // Define uma extensão chamada "react" com parâmetros usados pelo React Native durante o build
+    entryFile: "index.js", // Arquivo principal do seu app em JavaScript. É o ponto de entrada da aplicação.
+    bundleAssetName: "index.android.bundle", // Nome do arquivo que será gerado com o código empacotado (bundle) para Android
+    bundleInDebug: true, // Mesmo no modo debug, será gerado o bundle — útil para testes offline
+    bundleInRelease: true // Garante que o bundle seja gerado para builds de release (produção), essencial para distribuição
+]
+
+
+
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
