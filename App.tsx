@@ -28,16 +28,32 @@ interface Tarefa {
 
 const App = () => {
   // Estados para controlar os dados do aplicativo
+
+
+
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
   const [novaTarefa, setNovaTarefa] = useState<string>('');
   const [editarTarefa, setEditarTarefa] = useState<Tarefa | null>(null);
   const [textoEdicao, setTextoEdicao] = useState<string>('');
   const isDarkMode = useColorScheme() === 'dark';
+  const [totalTarefas, setTotalTarefas] = useState<number>(0);
+  const [tarefasConcluidas, setTarefasConcluidas] = useState<number>(0);
+
+
+
+
+
 
   // Carregar tarefas ao iniciar
   useEffect(() => {
     carregarTarefas();
   }, []);
+
+  useEffect(() => {
+  setTotalTarefas(tarefas.length);
+  setTarefasConcluidas(tarefas.filter((t) => t.concluida).length);
+}, [tarefas]);
+
 
   // Carregar tarefas do armazenamento local
   const carregarTarefas = async () => {
@@ -155,6 +171,7 @@ const App = () => {
       <Text style={[styles.titulo, isDarkMode && styles.tituloDark]}>
         Lista de Tarefas
       </Text>
+      
       <View style={styles.inputContainer}>
         <TextInput
           style={[styles.input, isDarkMode && styles.inputDark]}
@@ -181,6 +198,23 @@ const App = () => {
           </TouchableOpacity>
         )}
       </View>
+
+
+
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
+            <Text style={[{ fontSize: 16, fontWeight: 'bold' }, isDarkMode && { color: '#fff' }]}>
+              Tarefas Criadas: {totalTarefas}
+            </Text>
+            <Text style={[{ fontSize: 16, fontWeight: 'bold' }, isDarkMode && { color: '#fff' }]}>
+              Tarefas Concluídas: {tarefasConcluidas}
+            </Text>
+        </View>
+
+
+
+
+
       <FlatList
         data={tarefas}
         keyExtractor={(item) => item.id}
